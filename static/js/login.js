@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const passwordInput = this.previousElementSibling; // Selects the corresponding password field
             const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
             passwordInput.setAttribute("type", type);
-            this.innerHTML = type === "password" ? '<img style="width: 22px; height: 22px;" src="../static/img/Eye Open.svg" alt="Not shown">' : 
-            '<img style="width: 22px; height: 22px;" src="../static/img/Eye Close.svg" alt="Not shown">';
+            this.innerHTML = type === "password" ? '<img style="width: 22px; height: 22px;" src="../static/img/eye_open.svg" alt="Not shown">' : 
+            '<img style="width: 22px; height: 22px;" src="../static/img/eye_close.svg" alt="Not shown">';
         });
     });
 });
