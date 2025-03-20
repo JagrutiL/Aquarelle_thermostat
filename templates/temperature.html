@@ -1,0 +1,88 @@
+`
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Dashboard</title>
+
+    <link href="../static/css/bootstrap.css" rel="stylesheet" />
+    <link href="../static/css/datepicker.css" rel="stylesheet" />
+    <link href="../static/font/dmsans.css" rel="stylesheet">
+    <script src="../static/js/chart.js"></script>
+    <script src="../static/js/socket.js"></script>
+
+    <script src="../static/js/datepicker.js"></script>
+
+    <link href="../static/css/temperature.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <div class="py-2 text-center">
+        <img class="evoluzn_logo" src="../static/img/evoluzn_logo.png">
+    </div>
+    <div>
+        <!-- ------------temperature r y b Graph Start--------------------- -->
+        <div class="running_light_lux_main_div mt-4">
+            <div class="pb-3">
+                <a href="#"><img src="../static/img/back_button.svg"></a>
+            </div>
+            <div class="running_light_lux_main_heading">
+                TEMPERATURE GRAPH
+            </div>
+
+            <div class="running_graph_lux_main_div mt-4">
+                <div class="px-3 temperature_r_y_b_weekdays_main_div">
+                    <div>
+                        <div class="temperature_r_y_b_today_set_date">
+                            <select id="timeframeSelect_temp_r_y_b" class="running_light_start_end_div">
+                                <option value="daily">Today</option>
+                                <option value="set-date">Set Date</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="dateRangeContainer_temp_r_y_b" class="dateRangeContainer_css_temp_r_y_b mt-2">
+                    <label for="dateRange_temp_r_y_b">Select Date Range:</label>
+                    <input id="dateRange_temp_r_y_b" type="text" placeholder="Select Date Range"
+                        class="running_light_start_end_div">
+
+
+                    <button id="applyDateRange_temp_r_y_b" class="running_light_start_end_div">Apply</button>
+                </div>
+                <div>
+                    <div class="temp_r_y_b_start_end_date_main_div">
+                        <div id="startDateDisplay_temp_r_y_b"></div>
+                        <div id="endDateDisplay_temp_r_y_b" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="main_power_consumption_graph_div">
+                    <div class="main_canvas_wrapper">
+                        <canvas id="myChart_temp_r_y_b" class="main_power_consumption_graph_main_div"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ------------temperature r y b End--------------------- -->
+    </div>
+
+    <footer class="py-2 mt-5" style="text-align: center; color:#666666; margin-top: auto;">
+        <div> Powered By Evoluzn</div>
+    </footer>
+    <script src="../static/js/socket.js"></script>
+    <script src="../static/js/temperature.js"></script>
+
+    <script src="../static/js/chart_hammer.js"></script>
+
+    <script src="../static/js/chart.js"></script>
+    <script src="../static/js/chart_plugin.js"></script>
+
+</body>
+
+</html>
