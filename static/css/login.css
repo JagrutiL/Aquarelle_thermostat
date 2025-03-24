@@ -47,13 +47,13 @@ body {
     position: relative;
 }
 
-.login_left_panel img {
+
+.login_evoluzn_logo_img{
+    width: 150px;
     position: absolute;
-    width: 200px;
     top: 10px;
     left: 10px;
 }
-
 .login_toggle_buttons {
     position: absolute;
     right: -11px;
@@ -172,10 +172,12 @@ footer span {
     cursor: pointer;
 }
 
-
 .error{
     font-size: 15px;
     color: red;
+}
+.login_eye_open_img{
+    width: 20px; height: 20px;
 }
 
 @media (max-width: 1300px) {
