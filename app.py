@@ -3,6 +3,14 @@ import time
 import datetime
 import random
 from paho.mqtt import client as mqtt_client
+import threading
+from flask import Flask, render_template, jsonify, request, url_for, redirect,make_response,session, flash
+from flask_cors import CORS
+from flask_socketio import SocketIO,emit
+
+app = Flask(__name__) 
+CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # MQTT Broker details
 broker = 'broker.emqx.io'
@@ -34,6 +42,7 @@ def setup_database():
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     """)
+    # cursor.execute("""ALTER TABLE sensor_data ADD UNIQUE unique_index (device_id, timestamp);""") 
     conn.commit()
     cursor.close()
     conn.close()
@@ -117,7 +126,25 @@ def run():
     setup_database()
     client = connect_mqtt()
     client.loop_start()
-    publish_dummy_data(client)  # Start publishing dummy data every 60 seconds
+    # publish_dummy_data(client)  # Start publishing dummy data every 60 seconds
+    # Run publisher in a separate thread
+    publisher_thread = threading.Thread(target=publish_dummy_data, args=(client,))
+    publisher_thread.daemon = True
+    publisher_thread.start()
+
+@app.route('/')
+def home():
+    return render_template('login.html')
+
+@app.route('/home', methods=['POST', 'GET'])
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/graph', methods=['POST', 'GET'])
+def temperature():
+    return render_template('temperature_graph.html')
+
 
 if __name__ == '__main__':
     run()
+    socketio.run(app, host='0.0.0.0', port=5000,debug=True)

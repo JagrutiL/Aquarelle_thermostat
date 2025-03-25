@@ -52,7 +52,7 @@
                             Forgot Password?
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn border border-dark">Sign in</button>
+                            <a href="{{ url_for('dashboard') }}"><button type="submit" class="btn border border-dark">Sign in</button></a>
                         </div>
                     </form>
                 </div>
@@ -90,7 +90,7 @@
                         <span id="register_passwordError" class="error"></span>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn border border-dark">Register</button>
+                            <a href="{{ url_for('dashboard') }}"><button type="submit" class="btn border border-dark">Register</button></a>
                         </div>
 
                     </form>

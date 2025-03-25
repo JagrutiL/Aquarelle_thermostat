@@ -21,7 +21,7 @@
                         <div class="dashboard_main_logout_div">
                             <img class="dashboard_main_img" src="../static/img/logout.svg">
                         </div>
-                        <button class="dashboard_logout_button">Logout</button>
+                        <a href="{{ url_for('home') }}"><button class="dashboard_logout_button">Logout</button></a>
                     </div>
                 </div>
 
@@ -33,9 +33,9 @@
                                 TEMPERTURE SENSOR 1
                             </h3>
 
-                            <div class="dashboard_indv_nav_img_div">
+                            <a href="{{ url_for('temperature') }}"><div class="dashboard_indv_nav_img_div">
                                 <img class="dashboard_indv_nav_img" src="../static/img/navigate.svg">
-                            </div>
+                            </div></a>
 
                         </div>
 
