@@ -140,9 +140,51 @@ def home():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/graph', methods=['POST', 'GET'])
+def get_latest_device_data():
+    conn = connect_db()
+    cursor = conn.cursor(dictionary=True)
+    # cursor.execute("""
+    #     SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
+    #     FROM sensor_data AS sd
+    #     WHERE timestamp = (
+    #         SELECT MAX(timestamp) 
+    #         FROM sensor_data 
+    #         WHERE sensor_data.device_id = sd.device_id
+    #     )
+    #     ORDER BY timestamp DESC;
+    # """)
+    cursor.execute("""
+        SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
+        FROM sensor_data
+        WHERE (device_id, timestamp) IN (
+            SELECT device_id, MAX(timestamp) FROM sensor_data GROUP BY device_id
+        )
+    """)
+    data = cursor.fetchall()
+
+    for row in data:
+        row['timestamp'] = row['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
+
+    print("✅ Fetched Latest Data", data) 
+    cursor.close()
+    conn.close()
+    return data
+
+@socketio.on('connect')
+def handle_connect():
+    print("Client connected!")
+    socketio.start_background_task(send_live_data)
+
+def send_live_data():
+    while True:
+        socketio.emit('update_temperature', get_latest_device_data())
+        time.sleep(60)  # Emit every 60 seconds
+
+@app.route('/graph', methods=['GET'])
 def temperature():
-    return render_template('temperature_graph.html')
+    devices = get_latest_device_data()  # Fetch latest data from DB
+    return render_template('temperature_graph.html', devices=devices)
+
 
 
 if __name__ == '__main__':
