@@ -131,13 +131,11 @@
             <div>
                 <!-- ------------temperature r y b Graph Start--------------------- -->
                 <div class="running_light_lux_main_div mt-4">
-
                     <div class="running_light_lux_main_heading">
-                        TEMPERATURE GRAPH
+                        Temperature (R Y B)
                     </div>
-
                     <div class="running_graph_lux_main_div mt-4">
-                        <div class="px-3 temperature_r_y_b_weekdays_main_div">
+                        <div class="px-3">
                             <div>
                                 <div class="temperature_r_y_b_today_set_date">
                                     <select id="timeframeSelect_temp_r_y_b" class="running_light_start_end_div">
@@ -145,24 +143,40 @@
                                         <option value="set-date">Set Date</option>
                                     </select>
                                 </div>
-
+                                <div class="py-2 temp_annotation_div" style="display: none;">
+                                    <input id="annotationInput" type="number" placeholder="Enter Threshold Value"
+                                        class="running_light_start_end_div">
+                                    <button id="applyAnnotation" class="running_light_start_end_div">Apply
+                                        Threshold</button>
+                                </div>
+                                <div id="dateRangeContainer_temp_r_y_b" class="dateRangeContainer_css_temp_r_y_b mt-2" >
+                                    <label for="dateRange_temp_r_y_b">Select Date Range:</label>
+                                    <input id="dateRange_temp_r_y_b" type="text" placeholder="Select Date Range"
+                                        class="running_light_start_end_div">
+                                    <!-- <select id="daySelect_running_light_graph"
+                                        class="timeSelect_css_running_light_graph">
+                                        <option value="all">All Days</option>
+                                        <option value="6">Sunday</option>
+                                        <option value="0">Monday</option>
+                                        <option value="1">Tuesday</option>
+                                        <option value="2">Wednesday</option>
+                                        <option value="3">Thursday</option>
+                                        <option value="4">Friday</option>
+                                        <option value="5">Saturday</option>
+                                    </select> -->
+        
+                                    <button id="applyDateRange_temp_r_y_b"
+                                        class="running_light_start_end_div">Apply</button>
+                                </div>
+                                <div>
+                                    <div class="temp_r_y_b_start_end_date_main_div">
+                                        <div id="startDateDisplay_temp_r_y_b" ></div>
+                                        <div id="endDateDisplay_temp_r_y_b"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div id="dateRangeContainer_temp_r_y_b" class="dateRangeContainer_css_temp_r_y_b mt-2">
-                            <label for="dateRange_temp_r_y_b">Select Date Range:</label>
-                            <input id="dateRange_temp_r_y_b" type="text" placeholder="Select Date Range"
-                                class="running_light_start_end_div">
-
-
-                            <button id="applyDateRange_temp_r_y_b" class="running_light_start_end_div">Apply</button>
-                        </div>
-                        <div>
-                            <div class="temp_r_y_b_start_end_date_main_div">
-                                <div id="startDateDisplay_temp_r_y_b"></div>
-                                <div id="endDateDisplay_temp_r_y_b" style="display: none;"></div>
-                            </div>
-                        </div>
-
+        
                         <div class="main_power_consumption_graph_div">
                             <div class="main_canvas_wrapper">
                                 <canvas id="myChart_temp_r_y_b" class="main_power_consumption_graph_main_div"></canvas>
@@ -170,7 +184,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- ------------temperature r y b End--------------------- -->
             </div>
         </div>
