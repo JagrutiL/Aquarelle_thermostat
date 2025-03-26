@@ -138,7 +138,9 @@ def home():
 
 @app.route('/home', methods=['POST', 'GET'])
 def dashboard():
-    return render_template('dashboard.html')
+    devices = get_latest_device_data()
+    # print('devices----------------',devices)
+    return render_template('dashboard.html',devices=devices)
 
 def get_latest_device_data():
     conn = connect_db()
@@ -161,7 +163,7 @@ def get_latest_device_data():
         )
     """)
     data = cursor.fetchall()
-
+    print('yyyy',data)
     for row in data:
         row['timestamp'] = row['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
 
