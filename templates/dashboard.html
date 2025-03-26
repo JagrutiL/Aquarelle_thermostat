@@ -26,16 +26,19 @@
                 </div>
 
 
+                {% for device in devices %}
                 <div class="p-3">
                     <div class="p-4 dashboard_indv_temperature_box">
                         <div class="dashboard_indv_temperature_box_main_div">
                             <h3 class="dashboard_indv_temperature_title">
-                                TEMPERTURE SENSOR 1
+                                TEMPERTURE SENSOR {{ device.device_id }}
                             </h3>
 
-                            <a href="{{ url_for('temperature') }}"><div class="dashboard_indv_nav_img_div">
-                                <img class="dashboard_indv_nav_img" src="../static/img/navigate.svg">
-                            </div></a>
+                            <a href="{{ url_for('temperature') }}">
+                                <div class="dashboard_indv_nav_img_div">
+                                    <img class="dashboard_indv_nav_img" src="../static/img/navigate.svg">
+                                </div>
+                            </a>
 
                         </div>
 
@@ -58,7 +61,7 @@
                                         <div class="dashboard_temp_min_value_div">
                                             20.2 °C</div>
                                     </div>
-                                    <div class="dashboard_temp_avg_value_div">23.66 <span>°C</span></div>
+                                    <div class="dashboard_temp_avg_value_div" id="R-{{ device.device_id }}"> <span>°C</span></div>
                                     <div>
                                         <div class="dashboard_temp_max_div">
                                             Max</div>
@@ -84,7 +87,7 @@
                                         <div class="dashboard_temp_min_value_div">
                                             20.2 °C</div>
                                     </div>
-                                    <div class="dashboard_temp_avg_value_div">23.66 <span>°C</span></div>
+                                    <div class="dashboard_temp_avg_value_div" id="Y-{{ device.device_id }}"><span>°C</span></div>
                                     <div>
                                         <div class="dashboard_temp_max_div">
                                             Max</div>
@@ -108,10 +111,10 @@
                                     <div>
                                         <div class="dashboard_temp_min_div">
                                             Min</div>
-                                        <div class="dashboard_temp_min_value_div">
+                                        <div class="dashboard_temp_min_value_div" >
                                             20.2 °C</div>
                                     </div>
-                                    <div class="dashboard_temp_avg_value_div">23.66 <span>°C</span></div>
+                                    <div class="dashboard_temp_avg_value_div" id="B-{{ device.device_id }}"> <span>°C</span></div>
                                     <div>
                                         <div class="dashboard_temp_max_div">
                                             Max</div>
@@ -125,6 +128,7 @@
 
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -135,6 +139,8 @@
         <!-- pls inset footer backend-->
 
     </div>
+    <script src="../static/js/socket.io.js"></script>
+    <script src="../static/js/graph.js"></script>
 </body>
 
 </html>
