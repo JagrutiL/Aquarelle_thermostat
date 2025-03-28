@@ -139,7 +139,7 @@ def home():
 @app.route('/home', methods=['POST', 'GET'])
 def dashboard():
     devices = get_latest_device_data()
-    # print('devices----------------',devices)
+    
     return render_template('dashboard.html',devices=devices)
 
 def get_latest_device_data():
@@ -187,6 +187,10 @@ def temperature():
     devices = get_latest_device_data()  # Fetch latest data from DB
     return render_template('temperature_graph.html', devices=devices)
 
+@app.route('/graph_indivisual/<device_id>', methods=['GET'])
+def temperature_indivisual(device_id):
+    devices = get_latest_device_data()  # Fetch latest data from DB
+    return render_template('temperature_graph1.html',devices=devices,device_id=device_id)
 
 
 if __name__ == '__main__':
