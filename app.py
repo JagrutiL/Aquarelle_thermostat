@@ -103,10 +103,30 @@ def insert_data(device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag):
         cursor.close()
         conn.close()
 
+# def get_latest_device_data():
+#     """Fetch latest sensor data for all devices."""
+#     conn = connect_db()
+#     cursor = conn.cursor(dictionary=True)
+#     cursor.execute("""
+#         SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
+#         FROM sensor_data
+#         WHERE (device_id, timestamp) IN (
+#             SELECT device_id, MAX(timestamp) FROM sensor_data GROUP BY device_id
+#         )
+#     """)
+#     data = cursor.fetchall()
+#     for row in data:
+#         row['timestamp'] = row['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
+#     cursor.close()
+#     conn.close()
+#     return data
+
 def get_latest_device_data():
-    """Fetch latest sensor data for all devices."""
+    """Fetch latest sensor data and min/max values for all devices."""
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
+
+    # Fetch latest sensor data
     cursor.execute("""
         SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
         FROM sensor_data
@@ -114,20 +134,48 @@ def get_latest_device_data():
             SELECT device_id, MAX(timestamp) FROM sensor_data GROUP BY device_id
         )
     """)
-    data = cursor.fetchall()
-    for row in data:
+    latest_data = cursor.fetchall()
+
+    # Fetch min/max values
+    cursor.execute("""
+        SELECT 
+            device_id,
+            MIN(R1) AS minR1, MAX(R1) AS maxR1,
+            MIN(R2) AS minR2, MAX(R2) AS maxR2,
+            MIN(R3) AS minR3, MAX(R3) AS maxR3,
+            MIN(Y1) AS minY1, MAX(Y1) AS maxY1,
+            MIN(Y2) AS minY2, MAX(Y2) AS maxY2,
+            MIN(Y3) AS minY3, MAX(Y3) AS maxY3,
+            MIN(B1) AS minB1, MAX(B1) AS maxB1,
+            MIN(B2) AS minB2, MAX(B2) AS maxB2,
+            MIN(B3) AS minB3, MAX(B3) AS maxB3
+        FROM sensor_data
+        GROUP BY device_id
+    """)
+    min_max_data = {row['device_id']: row for row in cursor.fetchall()}
+
+    # Merge latest data with min/max data
+    for row in latest_data:
         row['timestamp'] = row['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
+        if row['device_id'] in min_max_data:
+            row.update(min_max_data[row['device_id']])  # Merge min/max values
+
     cursor.close()
     conn.close()
-    return data
+    
+    return latest_data
+
 
 @app.route('/')
 def home():
     return render_template('login.html')
 
+
+
 @app.route('/home', methods=['POST', 'GET'])
 def dashboard():
     devices = get_latest_device_data()
+    print("Devices data:------------", devices)
     return render_template('dashboard.html', devices=devices)
 
 @socketio.on('connect')
