@@ -223,4 +223,12 @@ body {
     font-size: 25px;
 }
 
+.temperature_dashboard_title{
+    color: #525C94;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
+
 /* ******************* hibay light css end ******************* */

@@ -173,4 +173,16 @@ body {
 
     }
   }
+
+  .edit_name {
+    background-color: transparent;
+    border: none;
+  }
+
+  .apply_name {
+    border: none;
+    background-color: #2B3674;
+    color: #ffffff;
+    border-radius: 5px;
+  }
   
