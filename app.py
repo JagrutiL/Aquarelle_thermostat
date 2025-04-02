@@ -1,36 +1,36 @@
 import mysql.connector
 import time
 import datetime
-import random
 from paho.mqtt import client as mqtt_client
-import threading
-from flask import Flask, render_template, jsonify, request, url_for, redirect,make_response,session, flash
+from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from flask_socketio import SocketIO,emit
+from flask_socketio import SocketIO
 
 app = Flask(__name__) 
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # MQTT Broker details
-broker = 'broker.emqx.io'
-port = 1883
-topic = "3pTemp/control"
+BROKER = '203.109.124.70'
+PORT = 18889
+TOPIC = "3pTempF0F0F0/control"
 
 # MySQL Database connection details
-db_config = {
+DB_CONFIG = {
     "host": "localhost",  # Change if MySQL is hosted elsewhere
     "user": "root",       # Your MySQL username
-    "password": "root",  # Your MySQL password
+    "password": "root",   # Your MySQL password
     "database": "mqtt_data"
 }
 
-# Create MySQL database and table (run once)
+def connect_db():
+    """Connect to MySQL database."""
+    return mysql.connector.connect(**DB_CONFIG)
+
 def setup_database():
-    conn = mysql.connector.connect(host=db_config["host"], user=db_config["user"], password=db_config["password"])
+    """Create MySQL database and table if they do not exist."""
+    conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("CREATE DATABASE IF NOT EXISTS mqtt_data")
-    cursor.execute("USE mqtt_data")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS sensor_data (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,115 +46,67 @@ def setup_database():
     conn.commit()
     cursor.close()
     conn.close()
-    print("✅ Database and Table Setup Complete")
+    print("✅ Database setup complete")
 
-# Connect to MySQL database
-def connect_db():
-    return mysql.connector.connect(**db_config)
-
-# MQTT Connection Function
 def connect_mqtt():
+    """Connect to MQTT broker and subscribe to topic."""
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("✅ Connected to MQTT Broker!")
-            client.subscribe(topic)
+            client.subscribe("#", qos=1)
         else:
-            print(f"❌ Failed to connect, return code {rc}")
-    
+            print(f"❌ Connection failed with code {rc}")
+
     client = mqtt_client.Client()
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(broker, port)
+    client.connect(BROKER, PORT)
     return client
 
-# Callback when message is received
 def on_message(client, userdata, msg):
-    if msg.topic.startswith("3pTemp"):
-        payload = msg.payload.decode()
+    """Handle incoming MQTT messages."""
+    try:
+        payload = msg.payload.decode().strip("{} ")
         print(f"📩 Received `{payload}` from `{msg.topic}`")
-        
-        try:
-            data = payload.strip("{} ").split(":")
-            device_id = data[1]
-            R1, Y1, B1 = float(data[2]), float(data[3]), float(data[4])
-            R2, Y2, B2 = float(data[5]), float(data[6]), float(data[7])
-            R3, Y3, B3 = float(data[8]), float(data[9]), float(data[10])
-            alert_flag = int(data[11])
-            
-            insert_data(device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag)
-        except Exception as e:
-            print(f"❌ Error parsing message: {e}")
-    else:
-        print(f"⚠️ Ignored message from topic `{msg.topic}`")
 
-# Insert Data into MySQL
+        data = payload.split(":")
+        if len(data) <= 12:
+            print(f"⚠️ Incomplete data received: {data}")
+            return
+
+        device_id = data[1]
+        R1, Y1, B1 = map(float, data[2:5])
+        R2, Y2, B2 = map(float, data[5:8])
+        R3, Y3, B3 = map(float, data[8:11])
+        alert_flag = int(data[12])
+
+        insert_data(device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag)
+    except Exception as e:
+        print(f"❌ Error processing message: {e}")
+
 def insert_data(device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag):
+    """Insert sensor data into MySQL."""
     conn = connect_db()
     cursor = conn.cursor()
-    sql = """
-        INSERT INTO sensor_data (device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag, timestamp)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    values = (device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag, datetime.datetime.now())
-    cursor.execute(sql, values)
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print("✅ Data Inserted into MySQL")
-
-# Generate and publish dummy data every 60 seconds
-def publish_dummy_data(client):
-    while True:
-        device_id = f"3pTempF0BF{random.randint(1, 10)}"
-        R1, Y1, B1 = round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2)
-        R2, Y2, B2 = round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2)
-        R3, Y3, B3 = round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2), round(random.uniform(25, 45), 2)
-        alert_flag = random.randint(0, 1)
-        
-        msg = f"{{device_id:{device_id}:{R1}:{Y1}:{B1}:{R2}:{Y2}:{B2}:{R3}:{Y3}:{B3}:{alert_flag}}}"
-        result = client.publish(topic, msg)
-        
-        if result.rc == mqtt_client.MQTT_ERR_SUCCESS:
-            print(f"✅ Published `{msg}` to `{topic}`")
-        else:
-            print(f"❌ Failed to publish message to `{topic}`")
-        
-        time.sleep(60)  # Wait 60 seconds before publishing again
-
-# Run the subscriber and dummy publisher
-def run():
-    setup_database()
-    client = connect_mqtt()
-    client.loop_start()
-    # publish_dummy_data(client)  # Start publishing dummy data every 60 seconds
-    # Run publisher in a separate thread
-    publisher_thread = threading.Thread(target=publish_dummy_data, args=(client,))
-    publisher_thread.daemon = True
-    publisher_thread.start()
-
-@app.route('/')
-def home():
-    return render_template('login.html')
-
-@app.route('/home', methods=['POST', 'GET'])
-def dashboard():
-    devices = get_latest_device_data()
-    # print('devices----------------',devices)
-    return render_template('dashboard.html',devices=devices)
+    try:
+        sql = """
+            INSERT INTO sensor_data (device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag, timestamp)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, alert_flag, datetime.datetime.now())
+        cursor.execute(sql, values)
+        conn.commit()
+        print("✅ Data inserted successfully!")
+    except mysql.connector.Error as err:
+        print(f"❌ MySQL Error: {err}")
+    finally:
+        cursor.close()
+        conn.close()
 
 def get_latest_device_data():
+    """Fetch latest sensor data for all devices."""
     conn = connect_db()
     cursor = conn.cursor(dictionary=True)
-    # cursor.execute("""
-    #     SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
-    #     FROM sensor_data AS sd
-    #     WHERE timestamp = (
-    #         SELECT MAX(timestamp) 
-    #         FROM sensor_data 
-    #         WHERE sensor_data.device_id = sd.device_id
-    #     )
-    #     ORDER BY timestamp DESC;
-    # """)
     cursor.execute("""
         SELECT device_id, R1, Y1, B1, R2, Y2, B2, R3, Y3, B3, timestamp
         FROM sensor_data
@@ -163,14 +115,20 @@ def get_latest_device_data():
         )
     """)
     data = cursor.fetchall()
-    print('yyyy',data)
     for row in data:
         row['timestamp'] = row['timestamp'].strftime('%Y-%m-%d %H:%M:%S')
-
-    print("✅ Fetched Latest Data", data) 
     cursor.close()
     conn.close()
     return data
+
+@app.route('/')
+def home():
+    return render_template('login.html')
+
+@app.route('/home', methods=['POST', 'GET'])
+def dashboard():
+    devices = get_latest_device_data()
+    return render_template('dashboard.html', devices=devices)
 
 @socketio.on('connect')
 def handle_connect():
@@ -178,17 +136,93 @@ def handle_connect():
     socketio.start_background_task(send_live_data)
 
 def send_live_data():
+    """Emit latest data to frontend every 60 seconds."""
     while True:
         socketio.emit('update_temperature', get_latest_device_data())
-        time.sleep(60)  # Emit every 60 seconds
+        time.sleep(60)
 
 @app.route('/graph', methods=['GET'])
 def temperature():
-    devices = get_latest_device_data()  # Fetch latest data from DB
+    devices = get_latest_device_data()
     return render_template('temperature_graph.html', devices=devices)
 
+@socketio.on('temperature_graph_data')
+def temperature_graph_data(data):
+    try:
+        print("Selected Data for temperature_graph_data graph:", data)
+        today = datetime.datetime.today().strftime('%Y-%m-%d')
+        start_date = data.get('startDate', today)
+        end_date = data.get('endDate', today)
+        timeselect = data.get('timeSelect', 'daily')
+    
 
+        conn = connect_db()
+        cursor = conn.cursor(dictionary=True)
+
+        if timeselect == "daily" or (start_date == end_date and timeselect == "set-date"):
+            # Hourly data query for daily or the same day set-date
+            query = f"""
+                WITH r AS (
+                    SELECT 
+                        CONCAT(LPAD(HOUR(timestamp), 2, '0'), ':', LPAD(FLOOR(MINUTE(timestamp) / 10) * 10, 2, '0')) AS time_interval, 
+                        DATE(timestamp) AS date,
+                        device_id,
+                        AVG((R1)) AS avg_R, 
+                        AVG((Y1) ) AS avg_Y, 
+                        AVG((B1)) AS avg_B
+                    FROM 
+                        sensor_data
+                    WHERE 
+                        DATE(timestamp) BETWEEN %s AND %s
+                    GROUP BY 
+                        date, time_interval, device_id
+                    ORDER BY 
+                        time_interval ASC
+                )
+                SELECT 
+                    r.time_interval AS time_interval, 
+                    ROUND(AVG(r.avg_R), 2) AS avg_R, 
+                    ROUND(AVG(r.avg_Y), 2) AS avg_Y, 
+                    ROUND(AVG(r.avg_B), 2) AS avg_B
+                FROM 
+                    r
+                GROUP BY 
+                    r.time_interval
+                ORDER BY 
+                    r.time_interval ASC;
+            """
+            
+            cursor.execute(query, (start_date, end_date))
+
+        # Fetch query results
+        results = cursor.fetchall()
+        print("Results:", results)
+
+        data = []
+        for row in results:
+            time_interval = row["time_interval"]
+            avg_R = row["avg_R"]
+            avg_Y = row["avg_Y"]
+            avg_B = row["avg_B"]
+
+            # Store data correctly
+            data.append({
+                'hour': time_interval,
+                'temperature1': avg_R,
+                'temperature2': avg_Y,
+                'temperature3': avg_B,
+            })
+
+        print("Data to be sent:", data)
+        # Emit the filled data
+        socketio.emit('temperature_graph_data', data, room=request.sid)
+
+    except Exception as e:
+        print("Database query failed:", e)
+        socketio.emit('temperature_graph_data', [], room=request.sid)
 
 if __name__ == '__main__':
-    run()
-    socketio.run(app, host='0.0.0.0', port=5000,debug=True)
+    setup_database()
+    mqtt_client = connect_mqtt()
+    mqtt_client.loop_start()
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)

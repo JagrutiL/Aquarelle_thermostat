@@ -51,31 +51,33 @@
                     <!-- ***** -->
                     <div class="lux_graph_level_indv_div p-3">
                         <div class="lux_graph_level_title_img_main_div">
-                            <h6> R2</h6>
-                            <img src="../static/img/temperature_icon.svg">
-                        </div>
-
-                        <div class="lux_graph_level_temp_value_div" id="R2-{{ device.device_id }}"><span>°C</span> </div>
-                    </div>
-                    <!-- ********** -->
-                    <div class="lux_graph_level_indv_div p-3">
-                        <div class="lux_graph_level_title_img_main_div">
-                            <h6> R3</h6>
-                            <img src="../static/img/temperature_icon.svg">
-                        </div>
-
-                        <div class="lux_graph_level_temp_value_div" id="R3-{{ device.device_id }}"><span>°C</span> </div>
-                    </div>
-                    <!-- ********* -->
-                </div>
-                <div class="lux_graph_level mt-4">
-                    <div class="lux_graph_level_indv_div p-3">
-                        <div class="lux_graph_level_title_img_main_div">
                             <h6> Y1</h6>
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
                         <div class="lux_graph_level_temp_value_div" id="Y1-{{ device.device_id }}"><span>°C</span> </div>
+                    </div>
+                    <!-- ********** -->
+                    <div class="lux_graph_level_indv_div p-3">
+                        <div class="lux_graph_level_title_img_main_div">
+                            <h6> B1</h6>
+                            <img src="../static/img/temperature_icon.svg">
+                        </div>
+
+                        <div class="lux_graph_level_temp_value_div" id="B1-{{ device.device_id }}"><span>°C</span> </div>
+                    </div>
+                    <!-- ********* -->
+                </div>
+
+
+                <div class="lux_graph_level mt-4">
+                    <div class="lux_graph_level_indv_div p-3">
+                        <div class="lux_graph_level_title_img_main_div">
+                            <h6> R2</h6>
+                            <img src="../static/img/temperature_icon.svg">
+                        </div>
+
+                        <div class="lux_graph_level_temp_value_div" id="R2-{{ device.device_id }}"><span>°C</span> </div>
                     </div>
                     <!-- ***** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -89,31 +91,33 @@
                     <!-- ********** -->
                     <div class="lux_graph_level_indv_div p-3">
                         <div class="lux_graph_level_title_img_main_div">
-                            <h6> Y3</h6>
-                            <img src="../static/img/temperature_icon.svg">
-                        </div>
-
-                        <div class="lux_graph_level_temp_value_div" id="Y3-{{ device.device_id }}"><span>°C</span> </div>
-                    </div>
-                    <!-- ********* -->
-                </div>
-                <div class="lux_graph_level mt-4">
-                    <div class="lux_graph_level_indv_div p-3">
-                        <div class="lux_graph_level_title_img_main_div">
-                            <h6> B1</h6>
-                            <img src="../static/img/temperature_icon.svg">
-                        </div>
-
-                        <div class="lux_graph_level_temp_value_div" id="B1-{{ device.device_id }}"><span>°C</span> </div>
-                    </div>
-                    <!-- ***** -->
-                    <div class="lux_graph_level_indv_div p-3">
-                        <div class="lux_graph_level_title_img_main_div">
                             <h6> B2</h6>
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
                         <div class="lux_graph_level_temp_value_div" id="B2-{{ device.device_id }}"><span>°C</span> </div>
+                    </div>
+                    <!-- ********* -->
+                </div>
+
+        
+                <div class="lux_graph_level mt-4">
+                    <div class="lux_graph_level_indv_div p-3">
+                        <div class="lux_graph_level_title_img_main_div">
+                            <h6> R3</h6>
+                            <img src="../static/img/temperature_icon.svg">
+                        </div>
+
+                        <div class="lux_graph_level_temp_value_div" id="R3-{{ device.device_id }}"><span>°C</span> </div>
+                    </div>
+                    <!-- ***** -->
+                    <div class="lux_graph_level_indv_div p-3">
+                        <div class="lux_graph_level_title_img_main_div">
+                            <h6> Y3</h6>
+                            <img src="../static/img/temperature_icon.svg">
+                        </div>
+
+                        <div class="lux_graph_level_temp_value_div" id="Y3-{{ device.device_id }}"><span>°C</span> </div>
                     </div>
                     <!-- ********** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -129,7 +133,6 @@
             </div>
 
             <!-- ****************************** -->
-
             <div>
                 <!-- ------------temperature r y b Graph Start--------------------- -->
                 <div class="running_light_lux_main_div mt-4">
@@ -188,6 +191,7 @@
                 </div>
                 <!-- ------------temperature r y b End--------------------- -->
             </div>
+            
         </div>
         {% endfor %}
         
@@ -201,8 +205,8 @@
     
 
     <script src="../static/js/socket.io.js"></script>
-    <!-- <script src="../static/js/temperature.js"></script> -->
-    <script src="../static/js/graph.js"></script>
+    <script src="../static/js/temperature.js"></script>
+    <!-- <script src="../static/js/graph.js"></script> -->
     <script src="../static/js/chart_hammer.js"></script>
 
     <script src="../static/js/chart.js"></script>

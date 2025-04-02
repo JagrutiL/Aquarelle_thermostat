@@ -19,6 +19,89 @@ function setupSocketConnection(ip) {
     console.log("Connected to SocketIO server");
     socket = io.connect(ip);
 
+    socket.on('update_temperature', function(data) {
+        console.log("Received updated data:", data);
+
+           // Create an object to store averages per device
+    let averages = {};
+
+        data.forEach(device => {
+            let deviceId = device.device_id;
+            console.log('deviceid:', deviceId);
+            // Calculate averages for R, Y, and B phases
+            let avgR = ((device.R1 + device.R2 + device.R3) / 3).toFixed(2);
+            let avgY = ((device.Y1 + device.Y2 + device.Y3) / 3).toFixed(2);
+            let avgB = ((device.B1 + device.B2 + device.B3) / 3).toFixed(2);
+
+            // Find min and max values for R, Y, and B phases
+            let minR = Math.min(device.R1, device.R2, device.R3).toFixed(2);
+            let maxR = Math.max(device.R1, device.R2, device.R3).toFixed(2);
+
+            let minY = Math.min(device.Y1, device.Y2, device.Y3).toFixed(2);
+            let maxY = Math.max(device.Y1, device.Y2, device.Y3).toFixed(2);
+
+            let minB = Math.min(device.B1, device.B2, device.B3).toFixed(2);
+            let maxB = Math.max(device.B1, device.B2, device.B3).toFixed(2);
+        // Store the averages
+        averages[deviceId] = { avgR, avgY, avgB, minR, maxR, minY, maxY, minB, maxB };
+
+        // Update the HTML elements with the calculated averages
+        let rElement = document.getElementById(`R-${deviceId}`);
+        let yElement = document.getElementById(`Y-${deviceId}`);
+        let bElement = document.getElementById(`B-${deviceId}`);
+
+        let rMinElement = document.getElementById(`R-min-${deviceId}`);
+        let rMaxElement = document.getElementById(`R-max-${deviceId}`);
+
+        let yMinElement = document.getElementById(`Y-min-${deviceId}`);
+        let yMaxElement = document.getElementById(`Y-max-${deviceId}`);
+
+        let bMinElement = document.getElementById(`B-min-${deviceId}`);
+        let bMaxElement = document.getElementById(`B-max-${deviceId}`);
+
+        if (rElement) rElement.innerHTML = `${avgR} <span>°C</span>`;
+        if (yElement) yElement.innerHTML = `${avgY} <span>°C</span>`;
+        if (bElement) bElement.innerHTML = `${avgB} <span>°C</span>`;
+
+        if (rMinElement) rMinElement.innerHTML = `${minR} <span>°C</span>`;
+        if (rMaxElement) rMaxElement.innerHTML = `${maxR} <span>°C</span>`;
+
+        if (yMinElement) yMinElement.innerHTML = `${minY} <span>°C</span>`;
+        if (yMaxElement) yMaxElement.innerHTML = `${maxY} <span>°C</span>`;
+
+        if (bMinElement) bMinElement.innerHTML = `${minB} <span>°C</span>`;
+        if (bMaxElement) bMaxElement.innerHTML = `${maxB} <span>°C</span>`;
+        });
+
+        console.log("Averges per device:", averages);
+
+    //     data.forEach(device => {
+    //         document.getElementById(`R1-${device.device_id}`).innerText = device.R1 + "°C";
+    //         document.getElementById(`Y1-${device.device_id}`).innerText = device.Y1 + "°C";
+    //         document.getElementById(`B1-${device.device_id}`).innerText = device.B1 + "°C";
+    //         document.getElementById(`R2-${device.device_id}`).innerText = device.R2 + "°C";
+    //         document.getElementById(`Y2-${device.device_id}`).innerText = device.Y2 + "°C";
+    //         document.getElementById(`B2-${device.device_id}`).innerText = device.B2 + "°C";
+    //         document.getElementById(`R3-${device.device_id}`).innerText = device.R3 + "°C";
+    //         document.getElementById(`Y3-${device.device_id}`).innerText = device.Y3 + "°C";
+    //         document.getElementById(`B3-${device.device_id}`).innerText = device.B3 + "°C";
+    //     });
+
+    // });    
+        data.forEach(device => {
+            let ids = [`R1`, `Y1`, `B1`, `R2`, `Y2`, `B2`, `R3`, `Y3`, `B3`];
+    
+            ids.forEach(phase => {
+                let element = document.getElementById(`${phase}-${device.device_id}`);
+                if (element) {
+                    element.innerText = device[phase] + "°C";
+                } else {
+                    // console.warn(`Element not found: ${phase}-${device.device_id}`);
+                }
+            });
+        });
+    });   
+
     socket.on('connect', function () {
         let today = new Date();
         // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
@@ -27,11 +110,15 @@ function setupSocketConnection(ip) {
             startDate: formattedTodayDate,
             endDate: formattedTodayDate,
             timeSelect: 'daily',
-            // selectedDay: selectedDay
+            
         });
-        // socket.emit('temperature_graph_data');
+
     });
     socket.on('temperature_graph_data', function (data) {
+        if (!data || !Array.isArray(data)) {
+            console.error("Received invalid or empty data:", data);
+            return; // Stop execution to prevent errors
+        }
         console.log('Received temperature data:', data);
         const currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
         if (currentTimeSelect === 'set-date') {
@@ -52,32 +139,6 @@ function setupSocketConnection(ip) {
         }
     });
 
-    const device_id = '3pTempF0BF17';
-
-    socket.emit('request_latest_temperature', device_id);
-    socket.on('latest_temperature_data', function (data) {
-        if (data.error || !data.device_id) {
-            console.log("Error:", data.error || "No data available.");
-            let statusElement = document.getElementById("status");
-            if (statusElement) statusElement.innerText = "Failed to fetch data or no data available.";
-        } else {
-            let deviceIdElement = document.getElementById("device-id");
-            if (deviceIdElement) deviceIdElement.innerText = data.device_id || "-";
-
-            let temp1Element = document.getElementById("temp1");
-            if (temp1Element) temp1Element.innerText = data.temp1 ? `${data.temp1} °C` : "-";
-
-            let temp2Element = document.getElementById("temp2");
-            if (temp2Element) temp2Element.innerText = data.temp2 ? `${data.temp2} °C` : "-";
-
-            let temp3Element = document.getElementById("temp3");
-            if (temp3Element) temp3Element.innerText = data.temp3 ? `${data.temp3} °C` : "-";
-        }
-    });
-    setInterval(function () {
-        socket.emit('request_latest_temperature', device_id);
-        console.log("Requested latest temperature data.");
-    }, 60000);
 }
 let isSetDateActive_temp_r_y_b = false;
 let selectedStartDate_temp_r_y_b, selectedEndDate_temp_r_y_b;
@@ -135,33 +196,44 @@ yellowGradient.addColorStop(1, '#FFE082');
 
 var staticDailyLabels = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
 
-
-
 function extractTemperatureData(data) {
-    const labels = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
-    let temp1 = Array(24).fill();
-    let temp2 = Array(24).fill();
-    let temp3 = Array(24).fill();
-
-
+    const labels = [];
+    const temp1 = [];
+    const temp2 = [];
+    const temp3 = [];
+    const allIntervals = [];
     for (let hour = 0; hour < 24; hour++) {
         for (let minute = 0; minute < 60; minute += 10) {
-            const labels = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+            const hourStr = String(hour).padStart(2, '0');
+            const minuteStr = String(minute).padStart(2, '0');
+            allIntervals.push(`${hourStr}:${minuteStr}`);
         }
     }
-
+    const dataMap = {};
     data.forEach(entry => {
-        const hour = parseInt(entry.hour, 10);
-        if (hour >= 0 && hour < 24) {
+        const { hour, temperature1, temperature2, temperature3 } = entry;
+        const timeStr = `${hour}`;
+        dataMap[timeStr] = { temperature1, temperature2, temperature3 };
+    });
 
-            temp1[hour] = entry.temperature1;
-            temp2[hour] = entry.temperature2;
-            temp3[hour] = entry.temperature3;
+    allIntervals.forEach(interval => {
+        labels.push(interval);
+
+        if (dataMap[interval]) {
+            const { temperature1, temperature2, temperature3 } = dataMap[interval];
+            temp1.push(temperature1 || 0); 
+            temp2.push(temperature2 || 0); 
+            temp3.push(temperature3 || 0); 
+        } else {
+            temp1.push(0);
+            temp2.push(0);
+            temp3.push(0);
         }
     });
 
     return { labels, temp1, temp2, temp3 };
 }
+
 let annotationLine = null;
 function updateGraph_temp_r_y_b(labels, temp1, temp2, temp3) {
     if (chart_temp_r_y_b) chart_temp_r_y_b.destroy();

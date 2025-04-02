@@ -41,90 +41,271 @@
                             </a>
 
                         </div>
+                        
+                        <div class="pt-3">
+                            <input type="text" value="Control Panel 1" class="control_panel_edit">
 
-                        <div class="pt-3 dashboard_temp_sensor_main_div">
-
-                            <div class="dashboard_temp_sensor_indv_div p-3">
-                                <div class="dashboard_temp_sensor_indv_div_T_R">
-                                    <h3 class="dashboard_temp_sensor_indv_div_T1">T1 - <span
-                                            class="dashboard_temp_R_title">
-                                            R</span> </h3>
-                                    <div>
-                                        <img src="../static/img/temperature_icon.svg">
+                            <div class="pt-3 dashboard_temp_sensor_main_div">
+    
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_R_title">
+                                                R1</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div" id="R1-min-{{ device.device_id }}">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="R1-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div" id="R1-max-{{ device.device_id }}">
+                                                20.2 °C</div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="dashboard_temp_min_max_main_div">
-                                    <div>
-                                        <div class="dashboard_temp_min_div">
-                                            Min</div>
-                                        <div class="dashboard_temp_min_value_div">
-                                            20.2 °C</div>
+                                <!-- ****** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_Y_title">Y1</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
                                     </div>
-                                    <div class="dashboard_temp_avg_value_div" id="R-{{ device.device_id }}"> <span>°C</span></div>
-                                    <div>
-                                        <div class="dashboard_temp_max_div">
-                                            Max</div>
-                                        <div class="dashboard_temp_max_value_div">
-                                            20.2 °C</div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div" id="Y1-min-{{ device.device_id }}">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="Y1-{{ device.device_id }}"><span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div" id="Y1-max-{{ device.device_id }}">
+                                                20.2 °C</div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- ********** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_B_title">
+                                                B1</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div" >
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="B1-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ********** -->
                             </div>
-                            <!-- ****** -->
-                            <div class="dashboard_temp_sensor_indv_div p-3">
-                                <div class="dashboard_temp_sensor_indv_div_T_R">
-                                    <h3 class="dashboard_temp_sensor_indv_div_T1">T1 - <span
-                                            class="dashboard_temp_Y_title">Y</span> </h3>
-                                    <div>
-                                        <img src="../static/img/temperature_icon.svg">
-                                    </div>
-                                </div>
-
-                                <div class="dashboard_temp_min_max_main_div">
-                                    <div>
-                                        <div class="dashboard_temp_min_div">
-                                            Min</div>
-                                        <div class="dashboard_temp_min_value_div">
-                                            20.2 °C</div>
-                                    </div>
-                                    <div class="dashboard_temp_avg_value_div" id="Y-{{ device.device_id }}"><span>°C</span></div>
-                                    <div>
-                                        <div class="dashboard_temp_max_div">
-                                            Max</div>
-                                        <div class="dashboard_temp_max_value_div">
-                                            20.2 °C</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ********** -->
-                            <div class="dashboard_temp_sensor_indv_div p-3">
-                                <div class="dashboard_temp_sensor_indv_div_T_R">
-                                    <h3 class="dashboard_temp_sensor_indv_div_T1">T1 - <span
-                                            class="dashboard_temp_B_title">
-                                            B</span> </h3>
-                                    <div>
-                                        <img src="../static/img/temperature_icon.svg">
-                                    </div>
-                                </div>
-
-                                <div class="dashboard_temp_min_max_main_div">
-                                    <div>
-                                        <div class="dashboard_temp_min_div">
-                                            Min</div>
-                                        <div class="dashboard_temp_min_value_div" >
-                                            20.2 °C</div>
-                                    </div>
-                                    <div class="dashboard_temp_avg_value_div" id="B-{{ device.device_id }}"> <span>°C</span></div>
-                                    <div>
-                                        <div class="dashboard_temp_max_div">
-                                            Max</div>
-                                        <div class="dashboard_temp_max_value_div">
-                                            20.2 °C</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- ********** -->
                         </div>
+                        <div class="pt-3">
+                            <input type="text" value="Control Panel 2" class="control_panel_edit">
+
+                            <div class="pt-3 dashboard_temp_sensor_main_div">
+    
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_R_title">
+                                                R2</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="R2-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ****** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_Y_title">Y2</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="Y2-{{ device.device_id }}"><span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ********** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_B_title">
+                                                B2</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div" >
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="B2-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ********** -->
+                            </div>
+                        </div>
+                       
+                        <div class="pt-3">
+                            <input type="text" value="Control Panel 3" class="control_panel_edit">
+
+                            <div class="pt-3 dashboard_temp_sensor_main_div">
+    
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_R_title">
+                                                R3</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="R3-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ****** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_Y_title">Y3</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="Y3-{{ device.device_id }}"><span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ********** -->
+                                <div class="dashboard_temp_sensor_indv_div p-3">
+                                    <div class="dashboard_temp_sensor_indv_div_T_R">
+                                        <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
+                                                class="dashboard_temp_B_title">
+                                                B3</span> </h3>
+                                        <div>
+                                            <img src="../static/img/temperature_icon.svg">
+                                        </div>
+                                    </div>
+    
+                                    <div class="dashboard_temp_min_max_main_div">
+                                        <div>
+                                            <div class="dashboard_temp_min_div">
+                                                Min</div>
+                                            <div class="dashboard_temp_min_value_div" >
+                                                20.2 °C</div>
+                                        </div>
+                                        <div class="dashboard_temp_avg_value_div" id="B3-{{ device.device_id }}"> <span>°C</span></div>
+                                        <div>
+                                            <div class="dashboard_temp_max_div">
+                                                Max</div>
+                                            <div class="dashboard_temp_max_value_div">
+                                                20.2 °C</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ********** -->
+                            </div>
+                        </div>
+                       
+                      
 
                     </div>
                 </div>
