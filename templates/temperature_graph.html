@@ -143,11 +143,20 @@
                     <div class="running_graph_lux_main_div mt-4">
                         <div class="px-3">
                             <div>
-                                <div class="temperature_r_y_b_today_set_date">
-                                    <select id="timeframeSelect_temp_r_y_b" class="running_light_start_end_div">
-                                        <option value="daily">Today</option>
-                                        <option value="set-date">Set Date</option>
-                                    </select>
+                                <div class="d-flex justify-content-end ">
+                                    <div class="temperature_r_y_b_control_panel me-2">
+                                        <select id="controlPanelSelect_temp_r_y_b" class="running_light_start_end_div">
+                                            <option value="panel-1">Control Panel 1</option>
+                                            <option value="panel-2">Control Panel 2</option>
+                                            <option value="panel-3">Control Panel 3</option>
+                                        </select>
+                                    </div>
+                                    <div class="temperature_r_y_b_today_set_date">
+                                        <select id="timeframeSelect_temp_r_y_b" class="running_light_start_end_div">
+                                            <option value="daily">Today</option>
+                                            <option value="set-date">Set Date</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="py-2 temp_annotation_div" style="display: none;">
                                     <input id="annotationInput" type="number" placeholder="Enter Threshold Value"
