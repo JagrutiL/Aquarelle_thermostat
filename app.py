@@ -189,6 +189,8 @@ def get_latest_device_data():
             MIN(B3) AS minB3, MAX(B3) AS maxB3
         FROM sensor_data where date(timestamp) = CURDATE()
         GROUP BY device_id
+        FROM sensor_data
+        WHERE date(timestamp) = CURDATE() GROUP BY device_id ;
     """)
     min_max_data = {row['device_id']: row for row in cursor.fetchall()}
 
@@ -203,12 +205,9 @@ def get_latest_device_data():
     
     return latest_data
 
-
 @app.route('/')
 def home():
     return render_template('login.html')
-
-
 
 @app.route('/home', methods=['POST', 'GET'])
 def dashboard():
@@ -241,7 +240,6 @@ def temperature_graph_data(data):
         end_date = data.get('endDate', today)
         timeselect = data.get('timeSelect', 'daily')
     
-
         conn = connect_db()
         cursor = conn.cursor(dictionary=True)
 
