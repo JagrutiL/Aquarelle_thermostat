@@ -187,8 +187,6 @@ def get_latest_device_data():
             MIN(B1) AS minB1, MAX(B1) AS maxB1,
             MIN(B2) AS minB2, MAX(B2) AS maxB2,
             MIN(B3) AS minB3, MAX(B3) AS maxB3
-        FROM sensor_data where date(timestamp) = CURDATE()
-        GROUP BY device_id
         FROM sensor_data
         WHERE date(timestamp) = CURDATE() GROUP BY device_id ;
     """)
