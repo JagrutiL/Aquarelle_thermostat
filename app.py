@@ -5,15 +5,53 @@ from paho.mqtt import client as mqtt_client
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO
+import socket
+import json
 
 app = Flask(__name__) 
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+
+def get_local_ip():
+    """Get the local IP address dynamically"""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))  # Connect to an external server
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
+def update_ip_json():
+    """Update ip.json with the current local IP"""
+    current_ip = f"http://{get_local_ip()}:5000"
+    
+    ip_data = {"ip": current_ip}
+    
+    with open("static/js/ip.json", "w") as f:  # Ensure it's inside `static/` so it's accessible
+        json.dump(ip_data, f, indent=4)
+
+update_ip_json()        
+
+@app.route('/ip.json')
+def get_ip():
+    """Serve the updated IP JSON file"""
+    with open("static/ip.json", "r") as f:
+        ip_data = json.load(f)
+    return jsonify(ip_data)
+
+
 # MQTT Broker details
 BROKER = '203.109.124.70'
 PORT = 18889
 TOPIC = "3pTempF0F0F0/control"
+
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+server_url = f"http://{ip_address}:5000"
+
+# Save the IP to ip.json
+with open("ip.json", "w") as f:
+    json.dump({"ip": server_url}, f)
 
 # MySQL Database connection details
 DB_CONFIG = {
@@ -149,7 +187,7 @@ def get_latest_device_data():
             MIN(B1) AS minB1, MAX(B1) AS maxB1,
             MIN(B2) AS minB2, MAX(B2) AS maxB2,
             MIN(B3) AS minB3, MAX(B3) AS maxB3
-        FROM sensor_data
+        FROM sensor_data where date(timestamp) = CURDATE()
         GROUP BY device_id
     """)
     min_max_data = {row['device_id']: row for row in cursor.fetchall()}
