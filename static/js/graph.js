@@ -1,7 +1,5 @@
 
-
-
-fetch('/ip.json')
+fetch('static/js/ip.json')
     .then(response => response.json())
     .then(data => {
         const serverIP = data.ip;
