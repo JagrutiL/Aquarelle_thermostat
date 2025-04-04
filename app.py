@@ -365,7 +365,7 @@ def temperature_graph_data(data):
 
             # Fetch query results
             results = cursor.fetchall()
-            print("Results:", results)
+            # print("Results:", results)
 
         data = []
         for row in results:
@@ -382,7 +382,7 @@ def temperature_graph_data(data):
                 'temperature3': avg_B,
             })
 
-        print("Data to be sent:", data)
+        # print("Data to be sent:", data)
         # Emit the filled data
         socketio.emit('temperature_graph_data', data, room=request.sid)
 

@@ -250,6 +250,16 @@ function extractTemperatureData(data) {
 
 let annotationLine = null;
 function updateGraph_temp_r_y_b(labels, temp1, temp2, temp3) {
+    const select = document.getElementById('controlPanelSelect_temp_r_y_b').value;
+    
+    const panelLabels = {
+        'panel-1': ['Temperature 1(R1)', 'Temperature 2(Y1)', 'Temperature 3(B1)'],
+        'panel-2': ['Temperature 1(R2)', 'Temperature 2(Y2)', 'Temperature 3(B2)'],
+        'panel-3': ['Temperature 1(R3)', 'Temperature 2(Y3)', 'Temperature 3(B3)']
+    };
+    const defaultLabels = ['Temperature 1(R)', 'Temperature 2(Y)', 'Temperature 3(B)'];
+
+    const [temperatureLabelR, temperatureLabelY, temperatureLabelB] = panelLabels[select] || defaultLabels;
     if (chart_temp_r_y_b) chart_temp_r_y_b.destroy();
     chart_temp_r_y_b = new Chart(ctx_temp_r_y_b, {
         type: 'line',
@@ -257,21 +267,21 @@ function updateGraph_temp_r_y_b(labels, temp1, temp2, temp3) {
             labels: labels,
             datasets: [
                 {
-                    label: 'Temperature 1(R)',
+                    label: temperatureLabelR,
                     data: temp1,
                     backgroundColor: redGradient,
                     borderColor: redGradient,
                     borderWidth: 1
                 },
                 {
-                    label: 'Temperature 2(Y)',
+                    label: temperatureLabelY,
                     data: temp2,
                     backgroundColor: yellowGradient,
                     borderColor: yellowGradient,
                     borderWidth: 1
                 },
                 {
-                    label: 'Temperature 3(B)',
+                    label: temperatureLabelB,
                     data: temp3,
                     backgroundColor: blueGradient,
                     borderColor: blueGradient,
