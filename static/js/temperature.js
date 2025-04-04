@@ -1,4 +1,17 @@
 let socket;
+const heading = document.getElementById('temperatureHeading');
+    const select = document.getElementById('controlPanelSelect_temp_r_y_b');
+
+    const headingMap = {
+        'panel-1': 'Temperature (R1 Y1 B1)',
+        'panel-2': 'Temperature (R2 Y2 B2)',
+        'panel-3': 'Temperature (R3 Y3 B3)'
+    };
+
+    select.addEventListener('change', function () {
+        const selectedValue = select.value;
+        heading.textContent = headingMap[selectedValue] || 'Temperature (R Y B)';
+    });
 
 function fetchIP() {
     return fetch("../static/js/ip.json")
@@ -110,6 +123,7 @@ function setupSocketConnection(ip) {
             startDate: formattedTodayDate,
             endDate: formattedTodayDate,
             timeSelect: 'daily',
+            controlGraph: 'panel-1'
             
         });
 
@@ -360,13 +374,14 @@ document.getElementById('applyDateRange_temp_r_y_b').addEventListener('click', f
         // Get the selected day from the dropdown
         // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
         var currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
+        var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value; 
 
         if (currentTimeSelect === 'daily') {
             let today = new Date();
             console.log('today', today)
             let formattedTodayDate = formatDateToYYYYMMDD(today);
 
-            emitTemperatureData({ startDate: formattedTodayDate, endDate: formattedTodayDate, timeSelect: 'daily' });
+            emitTemperatureData({ startDate: formattedTodayDate, endDate: formattedTodayDate, timeSelect: 'daily',controlGraph: graphControl });
             updateGraph_temp_r_y_b('daily', formattedTodayDate, formattedTodayDate);
         } else {
             var dateRangePicker = document.getElementById('dateRange_temp_r_y_b')._flatpickr;
@@ -379,18 +394,53 @@ document.getElementById('applyDateRange_temp_r_y_b').addEventListener('click', f
 
 
 
-            emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date' });
+            emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date',controlGraph: graphControl });
             updateGraph_temp_r_y_b('set-date', formattedStartDate, formattedEndDate);
         }
         // Update the graph
         updateGraph_temp_r_y_b('set-date', startDate, endDate);
     }
 });
+
+
+document.getElementById('controlPanelSelect_temp_r_y_b').addEventListener('change', function () {
+    // let selectedValue = this.value; 
+    // console.log("Selected Control Panel:", selectedValue);
+
+        // Get the selected day from the dropdown
+        // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
+        var currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
+
+        var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value; 
+
+        if (currentTimeSelect === 'daily') {
+            let today = new Date();
+            console.log('today', today)
+            let formattedTodayDate = formatDateToYYYYMMDD(today);
+
+            emitTemperatureData({ startDate: formattedTodayDate, endDate: formattedTodayDate, timeSelect: 'daily', controlGraph: graphControl });
+            updateGraph_temp_r_y_b('daily', formattedTodayDate, formattedTodayDate);
+        } else {
+            var dateRangePicker = document.getElementById('dateRange_temp_r_y_b')._flatpickr;
+            var selectedStartDate = dateRangePicker.selectedDates[0];
+            var selectedEndDate = dateRangePicker.selectedDates[0];
+
+            var formattedStartDate = formatDateToYYYYMMDD(selectedStartDate);
+            var formattedEndDate = formatDateToYYYYMMDD(selectedEndDate);
+            console.log('selectedStartDate_temp_r_y_b', formattedStartDate, formattedEndDate)
+
+
+
+            emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date', controlGraph: graphControl });
+            updateGraph_temp_r_y_b('set-date', formattedStartDate, formattedEndDate);
+        }
+});
 function emitTemperatureData(data) {
     const finalData = {
         startDate: data.startDate,
         endDate: data.endDate,
         timeSelect: data.timeSelect,
+         controlGraph: data.controlGraph
         // selectedDay: data.selectedDay || 'all',
     };
 

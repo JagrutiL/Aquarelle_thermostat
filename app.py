@@ -237,7 +237,17 @@ def temperature_graph_data(data):
         start_date = data.get('startDate', today)
         end_date = data.get('endDate', today)
         timeselect = data.get('timeSelect', 'daily')
-    
+        controlGraph = data.get('controlGraph','panel-1')
+        print('controlGraph-------',controlGraph)
+
+
+        panel_map = {
+            'panel-1': ('R1', 'Y1', 'B1'),
+            'panel-2': ('R2', 'Y2', 'B2'),
+            'panel-3': ('R3', 'Y3', 'B3')
+        }
+        r_col, y_col, b_col = panel_map.get(controlGraph, ('R1', 'Y1', 'B1'))
+        print("Selected columns:", r_col, y_col, b_col)
         conn = connect_db()
         cursor = conn.cursor(dictionary=True)
 
@@ -249,9 +259,9 @@ def temperature_graph_data(data):
                         CONCAT(LPAD(HOUR(timestamp), 2, '0'), ':', LPAD(FLOOR(MINUTE(timestamp) / 10) * 10, 2, '0')) AS time_interval, 
                         DATE(timestamp) AS date,
                         device_id,
-                        AVG((R1)) AS avg_R, 
-                        AVG((Y1) ) AS avg_Y, 
-                        AVG((B1)) AS avg_B
+                        AVG({r_col}) AS avg_R, 
+                        AVG({y_col}) AS avg_Y, 
+                        AVG({b_col}) AS avg_B
                     FROM 
                         sensor_data
                     WHERE 
@@ -276,9 +286,9 @@ def temperature_graph_data(data):
             
             cursor.execute(query, (start_date, end_date))
 
-        # Fetch query results
-        results = cursor.fetchall()
-        print("Results:", results)
+            # Fetch query results
+            results = cursor.fetchall()
+            print("Results:", results)
 
         data = []
         for row in results:
