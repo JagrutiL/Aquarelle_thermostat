@@ -81,6 +81,44 @@ def setup_database():
     """)
     # cursor.execute("""ALTER TABLE sensor_data ADD UNIQUE unique_index (device_id, timestamp);""") 
     conn.commit()
+
+    # ✅ Create `panel` table if it does not exist
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS panel (
+            id INT NOT NULL AUTO_INCREMENT,
+            device_id VARCHAR(50) NOT NULL,
+            panel_name VARCHAR(20) NOT NULL,
+            phase VARCHAR(10) NOT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY unique_device_panel (device_id, panel_name, phase)
+        )
+    """)
+    conn.commit()
+    print("✅ `panel` table setup complete")
+
+    # ✅ Check if data already exists before inserting
+    cursor.execute("SELECT COUNT(*) FROM panel")
+    count = cursor.fetchone()[0]
+
+    if count == 0:  # Insert only if table is empty
+        cursor.executemany("""
+            INSERT INTO panel (id, device_id, panel_name, phase) VALUES (%s, %s, %s, %s)
+        """, [
+            (4, '3pTempF0F0F0', 'panel2', 'B2'),
+            (5, '3pTempF0F0F0', 'panel2', 'R2'),
+            (6, '3pTempF0F0F0', 'panel2', 'Y2'),
+            (7, '3pTempF0F0F0', 'panel3', 'B3'),
+            (8, '3pTempF0F0F0', 'panel3', 'R3'),
+            (9, '3pTempF0F0F0', 'panel3', 'Y3'),
+            (2, '3pTempF0F0F0', 'shilpa', 'B1'),
+            (3, '3pTempF0F0F0', 'shilpa', 'R1'),
+            (1, '3pTempF0F0F0', 'shilpa', 'Y1')
+        ])
+        conn.commit()
+        print("✅ Initial data inserted into `panel` table")
+    else:
+        print("ℹ️ Data already exists in `panel` table, skipping insertion.")
+        
     cursor.close()
     conn.close()
     print("✅ Database setup complete")
