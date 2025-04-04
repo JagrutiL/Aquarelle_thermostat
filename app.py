@@ -209,11 +209,42 @@ def get_latest_device_data():
 def home():
     return render_template('login.html')
 
+# @app.route('/home', methods=['POST', 'GET'])
+# def dashboard():
+#     devices = get_latest_device_data()
+#     print("Devices data:------------", devices)
+#     return render_template('dashboard.html', devices=devices)
+
 @app.route('/home', methods=['POST', 'GET'])
 def dashboard():
+    global updated_name,updated_name_2,updated_name_3
     devices = get_latest_device_data()
+    conn = connect_db()
+    cursor = conn.cursor()
     print("Devices data:------------", devices)
-    return render_template('dashboard.html', devices=devices)
+    cursor.execute("SELECT DISTINCT panel_name FROM panel WHERE phase IN ('B1', 'R1', 'Y1') LIMIT 1")
+    updated_name = cursor.fetchone()[0]
+    print('updated_name',updated_name)
+    cursor.execute("SELECT DISTINCT panel_name FROM panel WHERE phase IN ('B2', 'R2', 'Y2') LIMIT 1")
+    updated_name_2 = cursor.fetchone()[0]
+    print('updated_name_2',updated_name_2)
+    cursor.execute("SELECT DISTINCT panel_name FROM panel WHERE phase IN ('B3', 'R3', 'Y3') LIMIT 1")
+    updated_name_3 = cursor.fetchone()[0] 
+    print('updated_name_3',updated_name_3)
+    # temperature()
+    cursor.execute("SELECT DISTINCT panel_name FROM panel")
+    panel_names = [row[0] for row in cursor.fetchall()] 
+
+    panel_data = {}
+
+    for panel_name in panel_names:
+        cursor.execute("SELECT DISTINCT phase FROM panel WHERE panel_name = %s", (panel_name,))
+        phases = [row[0] for row in cursor.fetchall()]
+        panel_data[panel_name] = phases
+
+    print("Panel Data:", panel_data)
+    
+    return render_template('dashboard.html', devices=devices,updated_name=updated_name, updated_name_2=updated_name_2, updated_name_3=updated_name_3,panel_data=panel_data)
 
 @socketio.on('connect')
 def handle_connect():
@@ -226,10 +257,16 @@ def send_live_data():
         socketio.emit('update_temperature', get_latest_device_data())
         time.sleep(60)
 
+# @app.route('/graph', methods=['GET'])
+# def temperature():
+#     devices = get_latest_device_data()
+#     return render_template('temperature_graph.html', devices=devices)
+
 @app.route('/graph', methods=['GET'])
 def temperature():
     devices = get_latest_device_data()
-    return render_template('temperature_graph.html', devices=devices)
+    dashboard()
+    return render_template('temperature_graph.html', devices=devices, updated_name=updated_name, updated_name_2=updated_name_2, updated_name_3=updated_name_3)
 
 @socketio.on('temperature_graph_data')
 def temperature_graph_data(data):
@@ -314,6 +351,110 @@ def temperature_graph_data(data):
     except Exception as e:
         print("Database query failed:", e)
         socketio.emit('temperature_graph_data', [], room=request.sid)
+
+
+@app.route('/update_panel_name', methods=['POST'])
+def update_panel_name():
+    global updated_name
+    data = request.json
+    new_name = data.get('panel_name', '').strip()
+    if not new_name:
+        return jsonify({"error": "Panel name cannot be empty!"}), 400
+    conn = None
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+        # Check if phases exist
+        cursor.execute("SELECT COUNT(*) FROM panel WHERE phase IN ('B1', 'R1', 'Y1')")
+        phase_count = cursor.fetchone()[0]
+        if phase_count == 0:
+            return jsonify({"error": "Phases not found"}), 404
+        # Update panel name for all three phases
+        update_query = "UPDATE panel SET panel_name = %s WHERE phase IN ('B1', 'R1', 'Y1')"
+        cursor.execute(update_query, (new_name,))
+        conn.commit()
+
+        return jsonify({"message": "Panel names updated successfully"}), 200
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+
+
+@app.route('/update_panel_name_2', methods=['POST'])
+def update_panel_name_2():
+    data = request.json
+    new_name = data.get('panel_name', '').strip()
+
+    if not new_name:
+        return jsonify({"error": "Panel name cannot be empty!"}), 400
+
+    conn = None
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+
+        # Check if phases exist
+        cursor.execute("SELECT COUNT(*) FROM panel WHERE phase IN ('B2', 'R2', 'Y2')")
+        phase_count = cursor.fetchone()[0]
+
+        if phase_count == 0:
+            return jsonify({"error": "Phases not found"}), 404
+
+        # Update panel name for all three phases
+        update_query = "UPDATE panel SET panel_name = %s WHERE phase IN ('B2', 'R2', 'Y2')"
+        cursor.execute(update_query, (new_name,))
+        conn.commit()
+
+        return jsonify({"message": "Panel names updated successfully"}), 200
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()
+
+
+@app.route('/update_panel_name_3', methods=['POST'])
+def update_panel_name_3():
+    data = request.json
+    new_name = data.get('panel_name', '').strip()
+    if not new_name:
+        return jsonify({"error": "Panel name cannot be empty!"}), 400
+    conn = None
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM panel WHERE phase IN ('B3', 'R3', 'Y3')")
+        phase_count = cursor.fetchone()[0]
+        if phase_count == 0:
+            return jsonify({"error": "Phases not found"}), 404
+        # Update panel name for all three phases
+        update_query = "UPDATE panel SET panel_name = %s WHERE phase IN ('B3', 'R3', 'Y3')"
+        cursor.execute(update_query, (new_name,))
+        conn.commit()
+
+        return jsonify({"message": "Panel names updated successfully"}), 200
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return jsonify({"error": f"Database error: {str(e)}"}), 500
+
+    finally:
+        if conn:
+            cursor.close()
+            conn.close()        
 
 if __name__ == '__main__':
     setup_database()

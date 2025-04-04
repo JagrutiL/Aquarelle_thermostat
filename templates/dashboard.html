@@ -43,11 +43,11 @@
                         </div>
                         
                         <div class="pt-3">
-                            <input type="text" value="Control Panel 1" class="control_panel_edit" readonly> 
-                            <button class="edit_name">
+                            <input type="text" value="{{ updated_name }}" id="control_panel_edit_1" class="control_panel_edit" readonly> 
+                            <button class="edit_name" id="edit_name_1">
                                 <img src="../static/img/akar-icons_edit.png" alt="" height="40">
                             </button>
-                            <button class="apply_name" style="display: none;">Apply</button>
+                            <button class="apply_name" id="apply_name_1" style="display: none;">Apply</button>
                             
 
                             <div class="pt-3 dashboard_temp_sensor_main_div">
@@ -78,7 +78,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ****** -->
+                                <!-- ** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -104,7 +104,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -131,13 +131,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                             </div>
                         </div>
                         <div class="pt-3">
-                            <input type="text" value="Control Panel 2" class="control_panel_edit" readonly> 
-                            <button class="edit_name"><img src="../static/img/akar-icons_edit.png" alt="" height="40"></button>
-                            <button class="apply_name" style="display: none;">Apply</button>
+                            <input type="text" value="{{updated_name_2}}" class="control_panel_edit" id="control_panel_edit_2" readonly > 
+                            <button class="edit_name" id="edit_name_2"><img src="../static/img/akar-icons_edit.png" alt="" height="40"></button>
+                            <button class="apply_name" id="apply_name_2" style="display: none;">Apply</button>
+
+
 
                             <div class="pt-3 dashboard_temp_sensor_main_div">
     
@@ -167,7 +169,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ****** -->
+                                <!-- ** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -193,7 +195,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -220,14 +222,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                             </div>
                         </div>
                        
                         <div class="pt-3">
-                            <input type="text" value="Control Panel 3" class="control_panel_edit" readonly> 
-                            <button class="edit_name"><img src="../static/img/akar-icons_edit.png" alt="" height="40"></button>
-                            <button class="apply_name" style="display: none;">Apply</button>
+                            <input type="text" value="{{updated_name_3}}" class="control_panel_edit" id="control_panel_edit_3" readonly> 
+                            <button class="edit_name" id="edit_name_3"><img src="../static/img/akar-icons_edit.png" alt="" height="40"></button>
+                            <button class="apply_name" id="apply_name_3" style="display: none;">Apply</button>
 
                             <div class="pt-3 dashboard_temp_sensor_main_div">
     
@@ -257,7 +259,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ****** -->
+                                <!-- ** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -275,7 +277,7 @@
                                                 20.2 °C</div>
                                         </div>
                                         <div class="dashboard_temp_avg_value_div" id="Y3-{{ device.device_id }}"><span>°C</span></div>
-                                        <div>
+                                        <div> 
                                             <div class="dashboard_temp_max_div">
                                                 Max</div>
                                             <div class="dashboard_temp_max_value_div" id="Y3-max-{{ device.device_id }}">
@@ -283,7 +285,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                                 <div class="dashboard_temp_sensor_indv_div p-3">
                                     <div class="dashboard_temp_sensor_indv_div_T_R">
                                         <h3 class="dashboard_temp_sensor_indv_div_T1"> <span
@@ -310,7 +312,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ********** -->
+                                <!-- **** -->
                             </div>
                         </div>
                        
