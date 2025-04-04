@@ -12,7 +12,6 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-
 def get_local_ip():
     """Get the local IP address dynamically"""
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -113,6 +112,9 @@ def on_message(client, userdata, msg):
             return
 
         device_id = data[1]
+        if device_id == "200":
+            print(f"⏭️ Skipping insertion for device_id: {device_id}")
+            return  
         R1, Y1, B1 = map(float, data[2:5])
         R2, Y2, B2 = map(float, data[5:8])
         R3, Y3, B3 = map(float, data[8:11])
