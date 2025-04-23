@@ -392,16 +392,21 @@ document.getElementById('timeframeSelect_temp_r_y_b').addEventListener('change',
     var dateRangeContainer = document.getElementById('dateRangeContainer_temp_r_y_b');
     var daterange_start = document.getElementById('startDateDisplay_temp_r_y_b');
     var daterange_end = document.getElementById('endDateDisplay_temp_r_y_b');
+    var temp_annotation_div=document.getElementById('temp_annotation_div');
+    
     if (selectedValue === 'set-date') {
         isSetDateActive_temp_r_y_b = true;
         dateRangeContainer.style.display = 'block';
         daterange_start.style.display = 'block';
         daterange_end.style.display = 'block';
+        temp_annotation_div.style.display='none'
+
     } else if (selectedValue === 'daily') {
         isSetDateActive_temp_r_y_b = false;
         dateRangeContainer.style.display = 'none';
         daterange_start.style.display = 'none';
         daterange_end.style.display = 'none';
+        temp_annotation_div.style.display='block'
 
         console.log('Daily selected: Updating graph for today\'s data.');
         let today = new Date();
