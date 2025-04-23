@@ -1,3 +1,4 @@
+
 document.addEventListener("click", function(event) {
   // If the clicked element has the class 'edit_name'
   if (event.target.closest(".edit_name")) {

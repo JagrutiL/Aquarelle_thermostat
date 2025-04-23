@@ -35,13 +35,15 @@ body {
 }
 
 .control_panel_edit {
-    font-size: 1.5em; 
-    font-weight: bold; 
+    font-size: 1.5em;
+    font-weight: bold;
     outline: none;
     color: #2B3674;
     border-radius: 5px;
-    border: 1px solid #ccc; /* Adjust thickness and color */
-    padding: 5px; /* Optional: Adjust padding for better appearance */
+    border: 1px solid #ccc;
+    /* Adjust thickness and color */
+    padding: 5px;
+    /* Optional: Adjust padding for better appearance */
 }
 
 
@@ -113,10 +115,12 @@ body {
 .dashboard_temp_R_title {
     color: #FF0000;
 }
-.dashboard_temp_Y_title{
+
+.dashboard_temp_Y_title {
     color: #FFCC00;
 }
-.dashboard_temp_B_title{
+
+.dashboard_temp_B_title {
     color: #0084FF;
 }
 
@@ -164,25 +168,28 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 @media (max-width: 768px) {
     .dashboard_temp_avg_value_div {
         font-size: 30px;
     }
+
     .dashboard_temp_sensor_indv_div_T1 {
         font-size: 25px;
 
     }
-  }
+}
 
-  .edit_name {
+.edit_name {
     background-color: transparent;
     border: none;
-  }
+}
 
-  .apply_name {
+.apply_name {
     border: none;
     background-color: #2B3674;
     color: #ffffff;
     border-radius: 5px;
-  }
-  
+}
+
+

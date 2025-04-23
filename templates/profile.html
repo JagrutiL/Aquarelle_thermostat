@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet" />
+    <link href="../static/css/profile.css" rel="stylesheet" />
+
+</head>
+
+
+<body>
+    <div class="p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{{ url_for('dashboard') }}"><button class="lux_graph_level_go_back_button">
+                        <img src="../static/img/left_arrow.svg"> Go Back</button></a>
+            </div>
+            <div>
+                {% include 'setting.html' %}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <div>
+            <h3 class="text-center p-3 profile_my_profile_title">MY PROFILE</h3>
+            <div class="mt-5 px-2 profile_profile_img_info_main_div">
+                <div>
+                    <div class="profile_profile_img_div">
+                        <img class="profile_profile_main_img" src="../static/img/empty_profile.png">
+                    </div>
+                    <div class="profile_smal_camera_icon_update_img">
+                        <label for="fileUpload" class="profile_img_label">
+                            <img src="../static/img/camera.svg" alt="Upload">
+                        </label>
+                        <input type="file" id="fileUpload" class="profile_file_input" />
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div>
+                        <div class="profile_name_title">
+                            balwant singh
+                        </div>
+                        <div class="mt-4 d-flex flex-row gap-2">
+                            <img src="../static/img/mail.svg">
+                            <div>evoluzn@gmail.com</div>
+                        </div>
+                        <div class=" mt-3 d-flex flex-row gap-2">
+                            <img src="../static/img/phone.svg">
+                            <div>1234567890</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- <footer></footer> -->
+</body>
+
+</html>
