@@ -1,17 +1,17 @@
 let socket;
 const heading = document.getElementById('temperatureHeading');
-    const select = document.getElementById('controlPanelSelect_temp_r_y_b');
+const select = document.getElementById('controlPanelSelect_temp_r_y_b');
 
-    const headingMap = {
-        'panel-1': 'Temperature (R1 Y1 B1)',
-        'panel-2': 'Temperature (R2 Y2 B2)',
-        'panel-3': 'Temperature (R3 Y3 B3)'
-    };
+const headingMap = {
+    'panel-1': 'Temperature (R1 Y1 B1)',
+    'panel-2': 'Temperature (R2 Y2 B2)',
+    'panel-3': 'Temperature (R3 Y3 B3)'
+};
 
-    select.addEventListener('change', function () {
-        const selectedValue = select.value;
-        heading.textContent = headingMap[selectedValue] || 'Temperature (R Y B)';
-    });
+select.addEventListener('change', function () {
+    const selectedValue = select.value;
+    heading.textContent = headingMap[selectedValue] || 'Temperature (R Y B)';
+});
 
 function fetchIP() {
     return fetch("../static/js/ip.json")
@@ -32,11 +32,11 @@ function setupSocketConnection(ip) {
     console.log("Connected to SocketIO server");
     socket = io.connect(ip);
 
-    socket.on('update_temperature', function(data) {
+    socket.on('update_temperature', function (data) {
         console.log("Received updated data:", data);
 
-           // Create an object to store averages per device
-    let averages = {};
+        // Create an object to store averages per device
+        let averages = {};
 
         data.forEach(device => {
             let deviceId = device.device_id;
@@ -55,55 +55,55 @@ function setupSocketConnection(ip) {
 
             let minB = Math.min(device.B1, device.B2, device.B3).toFixed(2);
             let maxB = Math.max(device.B1, device.B2, device.B3).toFixed(2);
-        // Store the averages
-        averages[deviceId] = { avgR, avgY, avgB, minR, maxR, minY, maxY, minB, maxB };
+            // Store the averages
+            averages[deviceId] = { avgR, avgY, avgB, minR, maxR, minY, maxY, minB, maxB };
 
-        // Update the HTML elements with the calculated averages
-        let rElement = document.getElementById(`R-${deviceId}`);
-        let yElement = document.getElementById(`Y-${deviceId}`);
-        let bElement = document.getElementById(`B-${deviceId}`);
+            // Update the HTML elements with the calculated averages
+            let rElement = document.getElementById(`R-${deviceId}`);
+            let yElement = document.getElementById(`Y-${deviceId}`);
+            let bElement = document.getElementById(`B-${deviceId}`);
 
-        let rMinElement = document.getElementById(`R-min-${deviceId}`);
-        let rMaxElement = document.getElementById(`R-max-${deviceId}`);
+            let rMinElement = document.getElementById(`R-min-${deviceId}`);
+            let rMaxElement = document.getElementById(`R-max-${deviceId}`);
 
-        let yMinElement = document.getElementById(`Y-min-${deviceId}`);
-        let yMaxElement = document.getElementById(`Y-max-${deviceId}`);
+            let yMinElement = document.getElementById(`Y-min-${deviceId}`);
+            let yMaxElement = document.getElementById(`Y-max-${deviceId}`);
 
-        let bMinElement = document.getElementById(`B-min-${deviceId}`);
-        let bMaxElement = document.getElementById(`B-max-${deviceId}`);
+            let bMinElement = document.getElementById(`B-min-${deviceId}`);
+            let bMaxElement = document.getElementById(`B-max-${deviceId}`);
 
-        if (rElement) rElement.innerHTML = `${avgR} <span>°C</span>`;
-        if (yElement) yElement.innerHTML = `${avgY} <span>°C</span>`;
-        if (bElement) bElement.innerHTML = `${avgB} <span>°C</span>`;
+            if (rElement) rElement.innerHTML = `${avgR} <span>°C</span>`;
+            if (yElement) yElement.innerHTML = `${avgY} <span>°C</span>`;
+            if (bElement) bElement.innerHTML = `${avgB} <span>°C</span>`;
 
-        if (rMinElement) rMinElement.innerHTML = `${minR} <span>°C</span>`;
-        if (rMaxElement) rMaxElement.innerHTML = `${maxR} <span>°C</span>`;
+            if (rMinElement) rMinElement.innerHTML = `${minR} <span>°C</span>`;
+            if (rMaxElement) rMaxElement.innerHTML = `${maxR} <span>°C</span>`;
 
-        if (yMinElement) yMinElement.innerHTML = `${minY} <span>°C</span>`;
-        if (yMaxElement) yMaxElement.innerHTML = `${maxY} <span>°C</span>`;
+            if (yMinElement) yMinElement.innerHTML = `${minY} <span>°C</span>`;
+            if (yMaxElement) yMaxElement.innerHTML = `${maxY} <span>°C</span>`;
 
-        if (bMinElement) bMinElement.innerHTML = `${minB} <span>°C</span>`;
-        if (bMaxElement) bMaxElement.innerHTML = `${maxB} <span>°C</span>`;
+            if (bMinElement) bMinElement.innerHTML = `${minB} <span>°C</span>`;
+            if (bMaxElement) bMaxElement.innerHTML = `${maxB} <span>°C</span>`;
         });
 
         console.log("Averges per device:", averages);
 
-    //     data.forEach(device => {
-    //         document.getElementById(`R1-${device.device_id}`).innerText = device.R1 + "°C";
-    //         document.getElementById(`Y1-${device.device_id}`).innerText = device.Y1 + "°C";
-    //         document.getElementById(`B1-${device.device_id}`).innerText = device.B1 + "°C";
-    //         document.getElementById(`R2-${device.device_id}`).innerText = device.R2 + "°C";
-    //         document.getElementById(`Y2-${device.device_id}`).innerText = device.Y2 + "°C";
-    //         document.getElementById(`B2-${device.device_id}`).innerText = device.B2 + "°C";
-    //         document.getElementById(`R3-${device.device_id}`).innerText = device.R3 + "°C";
-    //         document.getElementById(`Y3-${device.device_id}`).innerText = device.Y3 + "°C";
-    //         document.getElementById(`B3-${device.device_id}`).innerText = device.B3 + "°C";
-    //     });
+        //     data.forEach(device => {
+        //         document.getElementById(`R1-${device.device_id}`).innerText = device.R1 + "°C";
+        //         document.getElementById(`Y1-${device.device_id}`).innerText = device.Y1 + "°C";
+        //         document.getElementById(`B1-${device.device_id}`).innerText = device.B1 + "°C";
+        //         document.getElementById(`R2-${device.device_id}`).innerText = device.R2 + "°C";
+        //         document.getElementById(`Y2-${device.device_id}`).innerText = device.Y2 + "°C";
+        //         document.getElementById(`B2-${device.device_id}`).innerText = device.B2 + "°C";
+        //         document.getElementById(`R3-${device.device_id}`).innerText = device.R3 + "°C";
+        //         document.getElementById(`Y3-${device.device_id}`).innerText = device.Y3 + "°C";
+        //         document.getElementById(`B3-${device.device_id}`).innerText = device.B3 + "°C";
+        //     });
 
-    // });    
+        // });    
         data.forEach(device => {
             let ids = [`R1`, `Y1`, `B1`, `R2`, `Y2`, `B2`, `R3`, `Y3`, `B3`];
-    
+
             ids.forEach(phase => {
                 let element = document.getElementById(`${phase}-${device.device_id}`);
                 if (element) {
@@ -113,7 +113,7 @@ function setupSocketConnection(ip) {
                 }
             });
         });
-    });   
+    });
 
     socket.on('connect', function () {
         let today = new Date();
@@ -124,7 +124,7 @@ function setupSocketConnection(ip) {
             endDate: formattedTodayDate,
             timeSelect: 'daily',
             controlGraph: 'panel-1'
-            
+
         });
 
     });
@@ -154,6 +154,35 @@ function setupSocketConnection(ip) {
     });
 
 }
+const annotationValue = document.getElementById('annotationInput');
+const errorMessage_threshold = document.getElementById('errorMessage_threshold');
+
+annotationValue.addEventListener('change', () => {
+    let value = parseInt(annotationValue.value, 10);
+
+    if (value > 100) {
+        annotationValue.value = 100;
+        value = 100;
+        errorMessage_threshold.textContent = "Error: The number cannot exceed 100";
+    }
+    else if (value < 0) {
+        annotationValue.value = 0;
+        value = 0;
+        errorMessage_threshold.textContent = "Error: The number cannot be below 0";
+    } else {
+        errorMessage_threshold.textContent = "";
+    }
+
+    // Send value to Flask backend
+    fetch('/publish-threshold', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: value })
+    })
+        .then(response => response.json())
+        .then(data => console.log("Published:", data))
+        .catch(error => console.error("Error publishing:", error));
+});
 let isSetDateActive_temp_r_y_b = false;
 let selectedStartDate_temp_r_y_b, selectedEndDate_temp_r_y_b;
 
@@ -196,6 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
 var ctx_temp_r_y_b = document.getElementById('myChart_temp_r_y_b').getContext('2d');
 var chart_temp_r_y_b;
 
+let thresholdValue;
+
 const blueGradient = ctx_temp_r_y_b.createLinearGradient(0, 0, 0, 400);
 blueGradient.addColorStop(0, '#2959FF');
 blueGradient.addColorStop(1, '#9EB3FC');
@@ -235,9 +266,9 @@ function extractTemperatureData(data) {
 
         if (dataMap[interval]) {
             const { temperature1, temperature2, temperature3 } = dataMap[interval];
-            temp1.push(temperature1 || 0); 
-            temp2.push(temperature2 || 0); 
-            temp3.push(temperature3 || 0); 
+            temp1.push(temperature1 || 0);
+            temp2.push(temperature2 || 0);
+            temp3.push(temperature3 || 0);
         } else {
             temp1.push(0);
             temp2.push(0);
@@ -251,7 +282,7 @@ function extractTemperatureData(data) {
 let annotationLine = null;
 function updateGraph_temp_r_y_b(labels, temp1, temp2, temp3) {
     const select = document.getElementById('controlPanelSelect_temp_r_y_b').value;
-    
+
     const panelLabels = {
         'panel-1': ['Temperature 1(R1)', 'Temperature 2(Y1)', 'Temperature 3(B1)'],
         'panel-2': ['Temperature 1(R2)', 'Temperature 2(Y2)', 'Temperature 3(B2)'],
@@ -312,23 +343,36 @@ function updateGraph_temp_r_y_b(labels, temp1, temp2, temp3) {
                     display: true
                 },
                 annotation: {
-                    annotations: annotationLine ? [annotationLine] : []
+                    annotations: thresholdValue ? [{
+                        id: 'threshold',
+                        type: 'line',
+                        yMin: thresholdValue,
+                        yMax: thresholdValue,
+                        borderColor: '#D3D0C9',
+                        borderWidth: 5,
+                        // borderDash: [2, 6], 
+                        borderDashOffset: 0,
+                        label: {
+                            display: false
+                        }
+                    }] : []
                 }
             }
         }
     });
 }
+
 // Handle the annotation input
 document.getElementById('applyAnnotation').addEventListener('click', function () {
     var annotationValue = parseFloat(document.getElementById('annotationInput').value);
 
     if (!isNaN(annotationValue)) {
         // Create or update the annotation line
-        annotationLine = {
+        const newAnnotation = {
             type: 'line',
             yMin: annotationValue,
             yMax: annotationValue,
-            borderColor: '#A9A9A9',
+            borderColor: '#D3D0C9',
             borderWidth: 4,
             label: {
                 content: `Y = ${annotationValue}`,
@@ -336,26 +380,33 @@ document.getElementById('applyAnnotation').addEventListener('click', function ()
                 position: 'center'
             }
         };
-        // Update the chart to include the new annotation
-        updateGraph_temp_r_y_b('set-date', selectedStartDate_temp_r_y_b, selectedEndDate_temp_r_y_b);
-    } 
+        chart_temp_r_y_b.options.plugins.annotation.annotations = [newAnnotation];
+
+        chart_temp_r_y_b.update();
+    }
 });
+
 document.getElementById('timeframeSelect_temp_r_y_b').addEventListener('change', function () {
     var selectedValue = this.value;
     console.log('Selected timeframe:', selectedValue);
     var dateRangeContainer = document.getElementById('dateRangeContainer_temp_r_y_b');
     var daterange_start = document.getElementById('startDateDisplay_temp_r_y_b');
     var daterange_end = document.getElementById('endDateDisplay_temp_r_y_b');
+    var temp_annotation_div=document.getElementById('temp_annotation_div');
+    
     if (selectedValue === 'set-date') {
         isSetDateActive_temp_r_y_b = true;
         dateRangeContainer.style.display = 'block';
         daterange_start.style.display = 'block';
         daterange_end.style.display = 'block';
+        temp_annotation_div.style.display='none'
+
     } else if (selectedValue === 'daily') {
         isSetDateActive_temp_r_y_b = false;
         dateRangeContainer.style.display = 'none';
         daterange_start.style.display = 'none';
         daterange_end.style.display = 'none';
+        temp_annotation_div.style.display='block'
 
         console.log('Daily selected: Updating graph for today\'s data.');
         let today = new Date();
@@ -384,44 +435,7 @@ document.getElementById('applyDateRange_temp_r_y_b').addEventListener('click', f
         // Get the selected day from the dropdown
         // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
         var currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
-        var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value; 
-
-        if (currentTimeSelect === 'daily') {
-            let today = new Date();
-            console.log('today', today)
-            let formattedTodayDate = formatDateToYYYYMMDD(today);
-
-            emitTemperatureData({ startDate: formattedTodayDate, endDate: formattedTodayDate, timeSelect: 'daily',controlGraph: graphControl });
-            updateGraph_temp_r_y_b('daily', formattedTodayDate, formattedTodayDate);
-        } else {
-            var dateRangePicker = document.getElementById('dateRange_temp_r_y_b')._flatpickr;
-            var selectedStartDate = dateRangePicker.selectedDates[0];
-            var selectedEndDate = dateRangePicker.selectedDates[0];
-
-            var formattedStartDate = formatDateToYYYYMMDD(selectedStartDate);
-            var formattedEndDate = formatDateToYYYYMMDD(selectedEndDate);
-            console.log('selectedStartDate_temp_r_y_b', formattedStartDate, formattedEndDate)
-
-
-
-            emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date',controlGraph: graphControl });
-            updateGraph_temp_r_y_b('set-date', formattedStartDate, formattedEndDate);
-        }
-        // Update the graph
-        updateGraph_temp_r_y_b('set-date', startDate, endDate);
-    }
-});
-
-
-document.getElementById('controlPanelSelect_temp_r_y_b').addEventListener('change', function () {
-    // let selectedValue = this.value; 
-    // console.log("Selected Control Panel:", selectedValue);
-
-        // Get the selected day from the dropdown
-        // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
-        var currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
-
-        var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value; 
+        var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value;
 
         if (currentTimeSelect === 'daily') {
             let today = new Date();
@@ -444,13 +458,53 @@ document.getElementById('controlPanelSelect_temp_r_y_b').addEventListener('chang
             emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date', controlGraph: graphControl });
             updateGraph_temp_r_y_b('set-date', formattedStartDate, formattedEndDate);
         }
+        // Update the graph
+        updateGraph_temp_r_y_b('set-date', startDate, endDate);
+    }
 });
+
+
+document.getElementById('controlPanelSelect_temp_r_y_b').addEventListener('change', function () {
+    // let selectedValue = this.value; 
+    // console.log("Selected Control Panel:", selectedValue);
+
+    // Get the selected day from the dropdown
+    // var selectedDay = document.getElementById('daySelect_running_light_graph').value;
+    var currentTimeSelect = document.getElementById('timeframeSelect_temp_r_y_b').value;
+
+    var graphControl = document.getElementById('controlPanelSelect_temp_r_y_b').value;
+
+    if (currentTimeSelect === 'daily') {
+        let today = new Date();
+        console.log('today', today)
+        let formattedTodayDate = formatDateToYYYYMMDD(today);
+
+        emitTemperatureData({ startDate: formattedTodayDate, endDate: formattedTodayDate, timeSelect: 'daily', controlGraph: graphControl });
+        updateGraph_temp_r_y_b('daily', formattedTodayDate, formattedTodayDate);
+    } else {
+        var dateRangePicker = document.getElementById('dateRange_temp_r_y_b')._flatpickr;
+        var selectedStartDate = dateRangePicker.selectedDates[0];
+        var selectedEndDate = dateRangePicker.selectedDates[0];
+
+        var formattedStartDate = formatDateToYYYYMMDD(selectedStartDate);
+        var formattedEndDate = formatDateToYYYYMMDD(selectedEndDate);
+        console.log('selectedStartDate_temp_r_y_b', formattedStartDate, formattedEndDate)
+
+
+
+        emitTemperatureData({ startDate: formattedStartDate, endDate: formattedEndDate, timeSelect: 'set-date', controlGraph: graphControl });
+        updateGraph_temp_r_y_b('set-date', formattedStartDate, formattedEndDate);
+    }
+});
+
+
+
 function emitTemperatureData(data) {
     const finalData = {
         startDate: data.startDate,
         endDate: data.endDate,
         timeSelect: data.timeSelect,
-         controlGraph: data.controlGraph
+        controlGraph: data.controlGraph
         // selectedDay: data.selectedDay || 'all',
     };
 
@@ -466,3 +520,5 @@ updateGraph_temp_r_y_b('daily');
 fetchIP()
     .then(ip => setupSocketConnection(ip))
     .catch(error => console.error('Error setting up socket connection:', error));
+
+

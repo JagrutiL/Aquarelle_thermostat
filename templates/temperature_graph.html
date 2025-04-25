@@ -20,23 +20,26 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <a href="{{ url_for('dashboard') }}"><button class="lux_graph_level_go_back_button">
-                    <img src="../static/img/left_arrow.svg"> Go Back</button></a>
+                        <img src="../static/img/left_arrow.svg"> Go Back</button></a>
             </div>
-            <div class="d-flex flex-row ">
+            <!-- <div class="d-flex flex-row ">
                 <div>
                     <img src="../static/img/logout.svg">
                 </div>
-                <a href="{{ url_for('home') }}"><button class="dashboard_logout_button">Logout</button></a>
+                <a class="dashboard_logout_button" href="{{ url_for('home') }}"><button class="dashboard_logout_button">Logout</button></a>
+            </div> -->
+            <div>
+                {% include 'setting.html' %}
             </div>
         </div>
     </div>
-   
+
     <div class="d-flex flex-column min-vh-100">
         {% for device in devices %}
         <div class="p-3">
-          
+
             <div class="lux_graph_level_main_div mt-3">
-                <h3  class="temperature_dashboard_title">
+                <h3 class="temperature_dashboard_title">
                     {{ device.device_id }}
                 </h3>
                 <h4>{{updated_name}}</h4>
@@ -47,7 +50,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="R1-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="R1-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ***** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -56,7 +60,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="Y1-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="Y1-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -65,7 +70,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="B1-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="B1-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********* -->
                 </div>
@@ -78,7 +84,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="R2-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="R2-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ***** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -87,7 +94,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="Y2-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="Y2-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -96,7 +104,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="B2-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="B2-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********* -->
                 </div>
@@ -109,7 +118,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="R3-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="R3-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ***** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -118,7 +128,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="Y3-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="Y3-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********** -->
                     <div class="lux_graph_level_indv_div p-3">
@@ -127,7 +138,8 @@
                             <img src="../static/img/temperature_icon.svg">
                         </div>
 
-                        <div class="lux_graph_level_temp_value_div" id="B3-{{ device.device_id }}"><span>°C</span> </div>
+                        <div class="lux_graph_level_temp_value_div" id="B3-{{ device.device_id }}"><span>°C</span>
+                        </div>
                     </div>
                     <!-- ********* -->
                 </div>
@@ -158,13 +170,15 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="py-2 temp_annotation_div" style="display: none;">
+                                <div class="py-2 temp_annotation_div" id="temp_annotation_div">
                                     <input id="annotationInput" type="number" placeholder="Enter Threshold Value"
                                         class="running_light_start_end_div">
                                     <button id="applyAnnotation" class="running_light_start_end_div">Apply
-                                        Threshold</button>
+                                        Threshold</button> 
+                                        <div id="errorMessage_threshold"></div>
                                 </div>
-                                <div id="dateRangeContainer_temp_r_y_b" class="dateRangeContainer_css_temp_r_y_b mt-2" >
+                                
+                                <div id="dateRangeContainer_temp_r_y_b" class="dateRangeContainer_css_temp_r_y_b mt-2">
                                     <label for="dateRange_temp_r_y_b">Select Date Range:</label>
                                     <input id="dateRange_temp_r_y_b" type="text" placeholder="Select Date Range"
                                         class="running_light_start_end_div">
@@ -179,19 +193,19 @@
                                         <option value="4">Friday</option>
                                         <option value="5">Saturday</option>
                                     </select> -->
-        
+
                                     <button id="applyDateRange_temp_r_y_b"
                                         class="running_light_start_end_div">Apply</button>
                                 </div>
                                 <div>
                                     <div class="temp_r_y_b_start_end_date_main_div">
-                                        <div id="startDateDisplay_temp_r_y_b" ></div>
+                                        <div id="startDateDisplay_temp_r_y_b"></div>
                                         <div id="endDateDisplay_temp_r_y_b"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-        
+
                         <div class="main_power_consumption_graph_div">
                             <div class="main_canvas_wrapper">
                                 <canvas id="myChart_temp_r_y_b" class="main_power_consumption_graph_main_div"></canvas>
@@ -201,10 +215,10 @@
                 </div>
                 <!-- ------------temperature r y b End--------------------- -->
             </div>
-            
+
         </div>
         {% endfor %}
-        
+
         <!-- pls inset footer backend -->
         <footer class="py-2 mt-auto text-center">
             <div> Powered By <span>EVOLUZN</span></div>
@@ -212,7 +226,7 @@
         <!-- pls inset footer backend-->
 
     </div>
-    
+
 
     <script src="../static/js/socket.io.js"></script>
     <script src="../static/js/temperature.js"></script>

@@ -9,7 +9,9 @@ body {
 
 
 }
-
+#errorMessage_threshold{
+    color: rgb(233, 87, 87); font-size: 14px;
+}
 .evoluzn_logo {
     height: 40px;
 }
